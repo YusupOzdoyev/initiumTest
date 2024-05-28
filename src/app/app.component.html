@@ -1,1 +1,35 @@
-<h1>InitiumTask</h1>
+<main>
+  <h1>Клиенты</h1>
+  <div class="table-container">
+    <img class="add" (click)="openDialogAddNewClient()" [src]="'assets/add.svg'">
+    <img class="delete" (click)="openDialogDeleteClients()" [src]="'assets/delete.svg'">
+    <table>
+      <thead>
+      <tr>
+        <th>
+          <input type="checkbox"
+                 [checked]="parentChecked" [indeterminate]="parentIndeterminate" (change)="toggleChecked()">
+        </th>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>E-mail</th>
+        <th>Телефон</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of clients?.users; let i = index">
+        <td>
+          <input type="checkbox"
+                 [checked]="user.checked" (change)="updateCheckboxes(i)">
+        </td>
+        <td class="name" (click)="openDialogChangeClient(i)">{{ user.name }}</td>
+        <td>{{ user.surname }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone}}</td>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</main>

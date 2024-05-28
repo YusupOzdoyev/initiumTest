@@ -1,0 +1,19 @@
+@import '../../buttons';
+
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  mat-form-field {
+    width: 370px;
+  }
+}
+
+.second-button {
+  @extend %second-button;
+}
+
+.main-button {
+  @extend %main-button;
+}
