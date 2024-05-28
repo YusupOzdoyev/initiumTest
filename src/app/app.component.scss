@@ -1,0 +1,101 @@
+:host {
+  height: 100%;
+  display: block;
+}
+
+main {
+  padding: 16px;
+
+  h1 {
+    color: #2F7FD5;
+    font-weight: 500;
+    font-size: 1.75rem;
+    margin: 10px 0 26px 0;
+  }
+
+  .table-container {
+    width: 100%;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+
+    .add, .delete {
+      cursor: pointer;
+      border-radius: 50%;
+      margin: 10px;
+
+      &:hover {
+        background-color: #E2EEFF;
+      }
+
+      &:active {
+        background-color: #B5D3FF;
+      }
+
+      &:disabled {
+        color: #A8B0BF;
+      }
+    }
+    .delete {
+      margin-left: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      input.checkbox {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+
+      th {
+        color: #2F4C97;
+      }
+
+      td {
+        border-top: 0.5px solid #D7E1ED;
+        width: 280px;
+      }
+
+      tr {
+        height: 47px;
+
+        &:not(:first-child):hover {
+          background-color: #F1F5F9;
+          cursor: pointer;
+        }
+      }
+
+      th:nth-child(1), td:nth-child(1) {
+        text-align: center;
+        max-width: 24px;
+      }
+      th:nth-child(2), td:nth-child(2) {
+        text-align: left;
+      }
+      th:nth-child(n+3), td:nth-child(n+3) {
+        text-align: right;
+      }
+
+      th:not(:first-child):not(:last-child),
+      td:not(:first-child):not(:last-child) {
+        width: calc( 50% / 3);
+
+        @media (max-width: 768px) {
+          width: auto;
+          padding: 0 10px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        th:last-child,
+        td:last-child {
+          display: none;
+        }
+
+      }
+    }
+  }
+
+}
