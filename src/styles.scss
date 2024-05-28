@@ -1,4 +1,37 @@
-/* You can add global styles to this file, and also import other style files */
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$initium-primary: mat.define-palette(mat.$indigo-palette);
+$initium-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$initium-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$initium-theme: mat.define-light-theme((
+  color: (
+    primary: $initium-primary,
+    accent: $initium-accent,
+    warn: $initium-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($initium-theme);
+
 body, html {
   height: 100%;
   margin: 0;
@@ -7,7 +40,24 @@ body, html {
   background-color: #E9F3FF;
   color: #2E2E2E;
   font-weight: 400;
-  min-width: 480px;
+  min-width: 670px;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mdc-dialog__actions {
+  justify-content: end !important;
+  padding: 0 40px 40px 40px !important;
+}
+
+.mdc-dialog__title {
+  padding: 20px 40px 0 40px !important;
+  font-size: 24px !important;
+}
+
+.mdc-dialog .mdc-dialog__content {
+  padding: 20px 40px 20px 40px !important;
+}
+
+.mat-mdc-form-field-subscript-wrapper, .mat-mdc-form-field-bottom-align::before {
+  font-size: 12px;
+  text-align: right;
+}

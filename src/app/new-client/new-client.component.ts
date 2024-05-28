@@ -3,11 +3,13 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} f
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {IClient} from "../client.interface";
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-new-client',
   standalone: true,
   imports: [
+    CommonModule,
     MatFormFieldModule,
     MatDialogModule,
     FormsModule,

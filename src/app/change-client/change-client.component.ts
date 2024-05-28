@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { IClient } from '../client.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-change-client',
@@ -12,13 +13,14 @@ import { IClient } from '../client.interface';
     MatDialogModule,
     FormsModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule,
   ],
   templateUrl: './change-client.component.html',
   styleUrl: './change-client.component.scss'
 })
 export class ChangeClientComponent {
-
+  
   public changeClientForm: FormGroup;
 
   constructor(

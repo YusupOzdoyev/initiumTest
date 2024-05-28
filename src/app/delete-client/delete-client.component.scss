@@ -1,0 +1,13 @@
+@import '../../buttons';
+
+.second-button {
+  @extend %second-button;
+}
+
+.main-button {
+  @extend %main-button;
+}
+
+p {
+  padding: 28px 0;
+}

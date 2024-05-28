@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { NewClientComponent } from './new-client/new-client.component';
 import { ChangeClientComponent } from './change-client/change-client.component';
+import { DeleteClientComponent } from './delete-client/delete-client.component';
 
 @Component({
   selector: 'app-root',
@@ -77,7 +78,7 @@ export class AppComponent {
   public openDialogDeleteClients() {
     const checkedClientsCount = this.clients.users.reduce((count, client) => client.checked ? count + 1 : count, 0);
 
-    const dialogRef = this._dialogRef.open(DeleteClientsComponent, {
+    const dialogRef = this._dialogRef.open(DeleteClientComponent, {
       data: {checkedClientsCount: checkedClientsCount},
     })
 

@@ -1,0 +1,42 @@
+%button {
+  height: 45px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  border: none;
+  border-radius: 37px;
+  cursor: pointer;
+  padding: 12px 22px;
+  font-size: 18px;
+}
+
+%second-button {
+  @extend %button;
+  background-color: transparent;
+  color: #2F67D5;
+
+  &:hover {
+    background-color: #3C7CF81A
+  }
+
+  &:active {
+    background-color: #194EB633;
+  }
+}
+
+%main-button {
+  @extend %button;
+  color: #FFFFFF;
+  background-color: #2F67D5;
+
+  &:hover {
+    background-color: #3C7CF8
+  }
+
+  &:active {
+    background-color: #194EB6;
+  }
+
+  &:disabled {
+    background-color: #D8DEE9;
+  }
+}

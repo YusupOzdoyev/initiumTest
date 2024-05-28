@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Удаление строк</h1>
+<mat-dialog-content>
+  <p>Удалить выбранные строки ({{data.checkedClientsCount}})?</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button class="second-button" (click)="onNoClick()">Отмена</button>
+  <button class="main-button" [mat-dialog-close]="data">Удалить</button>
+</mat-dialog-actions>
