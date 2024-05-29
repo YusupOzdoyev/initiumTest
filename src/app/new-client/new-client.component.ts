@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/
 import {IClient} from "../client.interface";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-new-client',
@@ -11,10 +12,10 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     MatFormFieldModule,
+    ReactiveFormsModule,
     MatDialogModule,
     FormsModule,
-    MatDialogModule,
-    ReactiveFormsModule,
+    MatInputModule,
   ],
   templateUrl: './new-client.component.html',
   styleUrl: './new-client.component.scss'
@@ -31,7 +32,7 @@ export class NewClientComponent {
       name:  new FormControl('', [Validators.required, Validators.minLength(2)]),
       surname:  new FormControl('', [Validators.required, Validators.minLength(2)]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      phone: new FormControl('', [Validators.required, Validators.pattern(/^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/)])
+      phone: new FormControl('', [Validators.pattern(/^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/)])
     })
 
     this.newClientForm.valueChanges.subscribe(value => {

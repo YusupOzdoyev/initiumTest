@@ -7,8 +7,7 @@
       <thead>
       <tr>
         <th>
-          <input type="checkbox"
-                 [checked]="parentChecked" [indeterminate]="parentIndeterminate" (change)="toggleChecked()">
+          <mat-checkbox color="primary" [checked]="parentChecked" [indeterminate]="parentIndeterminate" (change)="toggleChecked()"></mat-checkbox>
         </th>
         <th>Имя</th>
         <th>Фамилия</th>
@@ -20,13 +19,12 @@
       <tbody>
       <tr *ngFor="let user of clients?.users; let i = index">
         <td>
-          <input type="checkbox"
-                 [checked]="user.checked" (change)="updateCheckboxes(i)">
+          <mat-checkbox color="primary" [checked]="user.checked" (change)="updateCheckboxes(i)"></mat-checkbox>
         </td>
-        <td class="name" (click)="openDialogChangeClient(i)">{{ user.name }}</td>
+        <td class="name" (click)="openDialogChangeClient(i, user)">{{ user.name }}</td>
         <td>{{ user.surname }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.phone}}</td>
+        <td>{{ user.phone }}</td>
         <td></td>
       </tr>
       </tbody>

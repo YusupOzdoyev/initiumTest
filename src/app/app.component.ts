@@ -1,12 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ClientDataService} from "./client-data.service";
-import {catchError, finalize, Observable, ReplaySubject, takeUntil, throwError} from "rxjs";
-import {HttpClientModule, HttpErrorResponse} from "@angular/common/http";
-import {IClientsData} from "./client.interface";
+import {
+  takeUntil,
+  catchError,
+  throwError,
+  Observable,
+  ReplaySubject,
+} from "rxjs";
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, inject } from '@angular/core';
+import { ClientDataService } from "./client-data.service";
+import { IClientsData, IClient } from "./client.interface";
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewClientComponent } from './new-client/new-client.component';
+import { HttpClientModule, HttpErrorResponse } from "@angular/common/http";
 import { ChangeClientComponent } from './change-client/change-client.component';
 import { DeleteClientComponent } from './delete-client/delete-client.component';
 
@@ -14,39 +21,48 @@ import { DeleteClientComponent } from './delete-client/delete-client.component';
   selector: 'app-root',
   standalone: true,
   imports: [
+    CommonModule,
     RouterOutlet, 
     HttpClientModule,
-    CommonModule,
+    MatCheckboxModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   public name: string = '';
-  public surname: string = '';
   public email: string = '';
   public phone: string = '';
+  public surname: string = '';
   public checked: boolean = false;
 
   public clients!: IClientsData;
-  public parentChecked = false;
-  public parentIndeterminate = false;
+  public parentChecked: boolean = false;
+  public parentIndeterminate: boolean = false;
+
   private _onDestroy$: ReplaySubject<void>;
 
-  constructor(
-    private _clientDataService: ClientDataService,
-    private _dialogRef: MatDialog
-  ) {
+  private _dialogRef = inject(MatDialog);
+  private _clientDataService = inject(ClientDataService);
+
+  constructor() {
     this._onDestroy$ = new ReplaySubject<void>(1);
   }
 
   ngOnInit(): void {
-    this.getClients();
+    let existingClients: string | null = localStorage.getItem('clients');
+    if (existingClients) {
+      this.clients = JSON.parse(existingClients);
+    } else {
+      this.getClients()
+    }
   }
+
   ngOnDestroy(): void {
     this._onDestroy$.next();
     this._onDestroy$.complete();
   }
+
   public getClients(): void {
     this._clientDataService.getClients().pipe(
       catchError((error: HttpErrorResponse) => this.handleError(error)),
@@ -56,56 +72,68 @@ export class AppComponent {
       this.clients.users.forEach(user => {
         user.checked = false;
       });
-      console.log(this.clients)
+      localStorage.setItem('clients', JSON.stringify(this.clients));
     })
   }
 
-  public openDialogAddNewClient() {
-    const dialogRef = this._dialogRef.open(NewClientComponent, {
-      data: {name: this.name, surname: this.surname, email: this.email, phone: this.phone, checked: this.checked},
+  public openDialogAddNewClient(): void {
+    const dialogRef: MatDialogRef<NewClientComponent> = this._dialogRef.open(NewClientComponent, {
+      data: {
+        name: this.name,
+        email: this.email,
+        phone: this.phone,
+        checked: this.checked,
+        surname: this.surname,
+      },
     })
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.clients.users.push(result);
-        console.log(result)
+        localStorage.setItem('clients', JSON.stringify(this.clients));
       }
-      console.log('The dialog was closed');
-
     });
   }
 
-  public openDialogDeleteClients() {
-    const checkedClientsCount = this.clients.users.reduce((count, client) => client.checked ? count + 1 : count, 0);
+  public openDialogDeleteClients(): void {
+    const checkedClientsCount: number = this.clients.users.reduce(
+      (count, client) => client.checked ? count + 1 : count, 0
+    );
 
-    const dialogRef = this._dialogRef.open(DeleteClientComponent, {
-      data: {checkedClientsCount: checkedClientsCount},
+    const dialogRef: MatDialogRef<DeleteClientComponent> = this._dialogRef.open(DeleteClientComponent, {
+      data: { checkedClientsCount: checkedClientsCount },
     })
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.clients.users = this.clients.users.filter(client => !client.checked);
-        this.parentIndeterminate = false;
+        localStorage.setItem('clients', JSON.stringify(this.clients));
         this.parentChecked = false;
+        this.parentIndeterminate = false;
       }
     });
   }
 
-  public openDialogChangeClient(selectedUser: number) {
-    const dialogRef = this._dialogRef.open(ChangeClientComponent, {
-      data: {name: this.name, surname: this.surname, email: this.email, phone: this.phone, checked: this.checked},
+  public openDialogChangeClient(selectedUserIndex: number, selectedUser: IClient) {
+    const dialogRef: MatDialogRef<ChangeClientComponent> = this._dialogRef.open(ChangeClientComponent, {
+      data: {
+        name: selectedUser.name,
+        email: selectedUser.email,
+        phone: selectedUser.phone,
+        checked: selectedUser.checked,
+        surname: selectedUser.surname,
+      },
     })
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.clients.users[selectedUser] = result;
+        this.clients.users[selectedUserIndex] = result;
+        localStorage.setItem('clients', JSON.stringify(this.clients));
       }
-      console.log('The dialog was closed');
-
     });
   }
 
-  toggleChecked() {
+  public toggleChecked() {
     this.parentChecked = !this.parentChecked;
     for (const user of this.clients.users) {
       user.checked = this.parentChecked;
@@ -113,19 +141,19 @@ export class AppComponent {
     this.parentIndeterminate = false;
   }
 
-  updateCheckboxes(index: number) {
+  public updateCheckboxes(index: number) {
     this.toggleUserChecked(index);
     this.updateIndeterminate();
   }
 
-  toggleUserChecked(index: number) {
+  public toggleUserChecked(index: number) {
     this.clients.users[index].checked = !this.clients.users[index].checked;
   }
 
-  updateIndeterminate() {
+  public updateIndeterminate() {
     let checked: number = 0;
     let unchecked: number = 0;
-    const length = this.clients.users.length;
+    const length: number = this.clients.users.length;
     this.clients.users.forEach((user) => {
       user.checked ? checked++ : unchecked++;
     });
@@ -134,6 +162,7 @@ export class AppComponent {
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
+    alert('Непредвиденная ошибка');
     return throwError(() => error);
   }
 }

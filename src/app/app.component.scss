@@ -2,36 +2,44 @@
   height: 100%;
   display: block;
 }
+
 main {
   padding: 16px;
+
   h1 {
     color: #2F7FD5;
     font-weight: 500;
     font-size: 1.75rem;
     margin: 10px 0 26px 0;
   }
+
   .table-container {
     width: 100%;
     background-color: #FFFFFF;
     border-radius: 20px;
+
     .add, .delete {
       cursor: pointer;
       border-radius: 50%;
       margin: 10px;
-      &:hover {
-        background-color: #E2EEFF;
-      }
-      &:active {
-        background-color: #B5D3FF;
-      }
-      &:disabled {
-        color: #A8B0BF;
-      }
+      height: 36px;
+      width: 36px;
+
+        &:hover {
+          background-color: #E2EEFF;
+        }
+        &:active {
+          background-color: #B5D3FF;
+        }
+        &:disabled {
+          color: #A8B0BF;
+        }
     }
 
     .delete {
       margin-left: 0;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -73,6 +81,7 @@ main {
         text-align: center;
         width: 50px;
       }
+
       th:nth-child(2), th:nth-child(3), td:nth-child(2), td:nth-child(2) {
         text-align: left;
       }
@@ -83,12 +92,14 @@ main {
 
       th:not(:first-child):not(:last-child),
       td:not(:first-child):not(:last-child) {
-        width: calc( 50% / 3);
+        width: calc(60% / 4);
+
         @media (max-width: 768px) {
           width: auto;
           padding: 0 10px;
         }
       }
+
       @media (max-width: 768px) {
         th:last-child,
         td:last-child {
